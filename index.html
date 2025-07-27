@@ -100,7 +100,7 @@
       <p class="info"><strong>Original Price:</strong> $7200</p>
 
       <label for="couponCoding">Apply Coupon Code:</label>
-      <input type="text" id="couponCoding" placeholder="Enter code, e.g. ARUN50">
+      <input type="text" id="couponCoding" placeholder="2 left">
       <button onclick="applyCoupon('coding')">Apply Coupon</button>
 
       <div class="price-box" id="priceCoding"></div>
@@ -124,7 +124,7 @@
       <p class="info"><strong>Original Price:</strong> $7200</p>
 
       <label for="couponRobotics">Apply Coupon Code:</label>
-      <input type="text" id="couponRobotics" placeholder="Enter code, e.g. ARUN50">
+      <input type="text" id="couponRobotics" placeholder="Only 2 Left">
       <button onclick="applyCoupon('robotics')">Apply Coupon</button>
 
       <div class="price-box" id="priceRobotics"></div>
@@ -165,6 +165,8 @@
       const originalPrice = 7200;
       const discountedPrice = 2439;
       const couponCode = 'ARUN50';
+      const validi = 'Expires in one hour'
+
 
       const inputId = course === 'coding' ? 'couponCoding' : 'couponRobotics';
       const priceId = course === 'coding' ? 'priceCoding' : 'priceRobotics';
@@ -179,6 +181,8 @@
 
       if (input === couponCode) {
         priceBox.innerHTML = `🎉 <strong>Discounted Price:</strong> <span class="discounted">$${discountedPrice.toFixed(2)}</span>`;
+         <div> validi <div>
+
       } else {
         errorBox.innerText = '❌ Invalid coupon code.';
       }
