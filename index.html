@@ -74,6 +74,12 @@
       margin-top: 5px;
     }
 
+    .countdown {
+      font-size: 16px;
+      color: orange;
+      margin-top: 5px;
+    }
+
     .benefits, .why-brightchamps {
       margin-top: 20px;
     }
@@ -100,10 +106,11 @@
       <p class="info"><strong>Original Price:</strong> $7200</p>
 
       <label for="couponCoding">Apply Coupon Code:</label>
-      <input type="text" id="couponCoding" placeholder="2 left">
+      <input type="text" id="couponCoding" placeholder="Enter code, e.g. ARUN50">
       <button onclick="applyCoupon('coding')">Apply Coupon</button>
 
       <div class="price-box" id="priceCoding"></div>
+      <div class="countdown" id="timerCoding"></div>
       <div class="error" id="errorCoding"></div>
 
       <div class="benefits">
@@ -124,10 +131,11 @@
       <p class="info"><strong>Original Price:</strong> $7200</p>
 
       <label for="couponRobotics">Apply Coupon Code:</label>
-      <input type="text" id="couponRobotics" placeholder="Only 2 Left">
+      <input type="text" id="couponRobotics" placeholder="Just 2 Coupon code left ">
       <button onclick="applyCoupon('robotics')">Apply Coupon</button>
 
       <div class="price-box" id="priceRobotics"></div>
+      <div class="countdown" id="timerRobotics"></div>
       <div class="error" id="errorRobotics"></div>
 
       <div class="benefits">
@@ -161,32 +169,57 @@
   </div>
 
   <script>
+    const originalPrice = 7200;
+    const discountedPrice = 2439;
+    const couponCode = "ARUN50";
+
+    let countdowns = {};
+
     function applyCoupon(course) {
-      const originalPrice = 7200;
-      const discountedPrice = 2439;
-      const couponCode = 'ARUN50';
-      const validi = 'Expires in one hour' ;
-
-
       const inputId = course === 'coding' ? 'couponCoding' : 'couponRobotics';
       const priceId = course === 'coding' ? 'priceCoding' : 'priceRobotics';
       const errorId = course === 'coding' ? 'errorCoding' : 'errorRobotics';
+      const timerId = course === 'coding' ? 'timerCoding' : 'timerRobotics';
 
       const input = document.getElementById(inputId).value.trim().toUpperCase();
       const priceBox = document.getElementById(priceId);
       const errorBox = document.getElementById(errorId);
+      const timerBox = document.getElementById(timerId);
+
+      clearInterval(countdowns[course]); // Clear any existing timer
 
       priceBox.innerHTML = '';
       errorBox.innerHTML = '';
+      timerBox.innerHTML = '';
 
       if (input === couponCode) {
         priceBox.innerHTML = `🎉 <strong>Discounted Price:</strong> <span class="discounted">$${discountedPrice.toFixed(2)}</span>`;
-         Validi
 
+        // Set countdown for 1 hour (3600 seconds)
+        let timeLeft = 3600;
+        updateTimerDisplay(timeLeft, timerBox);
+
+        countdowns[course] = setInterval(() => {
+          timeLeft--;
+          if (timeLeft <= 0) {
+            clearInterval(countdowns[course]);
+            timerBox.innerHTML = '⏳ Coupon expired.';
+          } else {
+            updateTimerDisplay(timeLeft, timerBox);
+          }
+        }, 1000);
       } else {
-        errorBox.innerText = '❌ Invalid coupon code.';
+        errorBox.innerText = "❌ Invalid coupon code.";
       }
+    }
+
+    function updateTimerDisplay(seconds, element) {
+      const h = String(Math.floor(seconds / 3600)).padStart(2, '0');
+      const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
+      const s = String(seconds % 60).padStart(2, '0');
+      element.innerHTML = `⏳ Coupon applied! Expires in ${h}:${m}:${s}`;
     }
   </script>
 </body>
 </html>
+
