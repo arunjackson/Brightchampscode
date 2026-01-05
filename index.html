@@ -1,224 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>BrightCHAMPS – Coding & Robotics</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ON Call Prices</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #eef1f5;
-      margin: 0;
-      padding: 20px;
+      background: #f5f7fb;
+      padding: 30px;
     }
-
     .container {
       max-width: 900px;
       margin: auto;
-      background: #fff;
-      padding: 30px;
+      background: #ffffff;
+      padding: 25px;
       border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
     }
-
-    h1, h2 {
+    h1 {
       text-align: center;
-      color: #333;
+      margin-bottom: 20px;
     }
-
-    .course {
-      margin-bottom: 40px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      padding: 20px;
-    }
-
-    .course-title {
-      font-size: 20px;
-      font-weight: bold;
-      margin-bottom: 10px;
-      color: #007bff;
-    }
-
-    .info {
-      margin-bottom: 10px;
-    }
-
-    input, button {
+    table {
       width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      border-radius: 5px;
-      border: 1px solid #bbb;
-      font-size: 16px;
+      border-collapse: collapse;
     }
-
-    button {
-      background-color: #28a745;
-      color: white;
-      cursor: pointer;
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
     }
-
-    .price-box {
-      margin-top: 15px;
-      font-size: 18px;
+    th {
+      background: #f0f2f8;
     }
-
-    .discounted {
-      color: green;
+    input {
+      width: 100%;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    .highlight {
       font-weight: bold;
+      color: #0b5ed7;
     }
-
-    .error {
-      color: red;
+    .note {
+      margin-top: 15px;
       font-size: 14px;
-      margin-top: 5px;
-    }
-
-    .countdown {
-      font-size: 16px;
-      color: orange;
-      margin-top: 5px;
-    }
-
-    .benefits, .why-brightchamps {
-      margin-top: 20px;
-    }
-
-    ul {
-      padding-left: 20px;
-    }
-
-    .divider {
-      margin: 40px 0;
-      border-top: 2px dashed #ccc;
+      color: #555;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>BrightCHAMPS</h1>
-    <h2>Coding & Robotics Programs</h2>
+    <h1>ON Call Prices</h1>
 
-    <!-- Coding Section -->
-    <div class="course">
-      <div class="course-title">💻 Coding Course</div>
-      <p class="info"><strong>Total Classes:</strong> 150</p>
-      <p class="info"><strong>Original Price:</strong> $7200</p>
+    <div style="display:grid;grid-template-columns:2fr 1fr;gap:20px;">
 
-      <label for="couponCoding">Apply Coupon Code:</label>
-      <input type="text" id="couponCoding" placeholder="Just 3 Coupon code left ">
-      <button onclick="applyCoupon('coding')">Apply Coupon</button>
+    <table>
+      <tr>
+        <th>OTO</th>
+        <td>Robotics</td>
+      </tr>
+      <tr>
+        <th>Class Bundle (Enter Here)</th>
+        <td><input type="number" id="classes" value="45" oninput="calculate()"></td>
+      </tr>
+      <tr>
+        <th>Rate Per Class (USD)</th>
+        <td>$<span id="basePrice">25</span></td>
+      </tr>
+      <tr>
+        <th>Website Discount</th>
+        <td><span id="webDiscount">0%</span></td>
+      </tr>
+      <tr>
+        <th>Website Discounted RPC</th>
+        <td>$<span id="webRPC">25.00</span></td>
+      </tr>
+      <tr>
+        <th>Employee Discount (SM)</th>
+        <td>25%</td>
+      </tr>
+      <tr>
+        <th>Total Discount</th>
+        <td><span id="totalDiscount">25%</span></td>
+      </tr>
+      <tr>
+        <th>SM Discounted RPC</th>
+        <td class="highlight">$<span id="smRPC">18.75</span></td>
+      </tr>
+      <tr>
+        <th>Scholarship Price (Including Kit)</th>
+        <td class="highlight">$<span id="scholarshipPrice">923.75</span></td>
+      </tr>
+      <tr>
+        <th>Original Price</th>
+        <td style="color:#888;"><del>$<span id="originalPrice">1205.00</span></del></td>
+      </tr>
+      <tr>
+        <th><strong>TOTAL PRICE – PAYABLE TODAY</strong></th>
+        <td class="highlight">$<span id="finalPayable">923.75</span></td>
+      </tr>
+    </table>
 
-      <div class="price-box" id="priceCoding"></div>
-      <div class="countdown" id="timerCoding"></div>
-      <div class="error" id="errorCoding"></div>
-
-      <div class="benefits">
-        <strong>📘 Benefits:</strong>
-        <ul>
-          <li>Learn Python, Scratch, AI, Web Dev & more</li>
-          <li>1:1 Live Sessions with Top Tutors</li>
-          <li>Real Projects & International Certifications</li>
-          <li>Build Logical Thinking & Creativity</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Robotics Section -->
-    <div class="course">
-      <div class="course-title">🤖 Robotics Course</div>
-      <p class="info"><strong>Total Classes:</strong> 150</p>
-      <p class="info"><strong>Original Price:</strong> $7200</p>
-
-      <label for="couponRobotics">Apply Coupon Code:</label>
-      <input type="text" id="couponRobotics" placeholder="Just 2 Coupon code left ">
-      <button onclick="applyCoupon('robotics')">Apply Coupon</button>
-
-      <div class="price-box" id="priceRobotics"></div>
-      <div class="countdown" id="timerRobotics"></div>
-      <div class="error" id="errorRobotics"></div>
-
-      <div class="benefits">
-        <strong>📦 Benefits:</strong>
-        <ul>
-          <li>Build Real Robots with Hardware Kit</li>
-          <li>STEM Concepts + Hands-on Learning</li>
-          <li>1:1 Guidance from Expert Mentors</li>
-          <li>International STEM Certification</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <!-- Why BrightCHAMPS -->
-    <div class="why-brightchamps">
-      <h3>🌟 Why Parents Choose BrightCHAMPS</h3>
-      <ul>
-        <li>✅ 1:1 Live Classes</li>
-        <li>✅ Flexible Timings</li>
-        <li>✅ Dashboard Access – Track Progress</li>
-        <li>✅ Homework, Notes, Quizzes, Assignments</li>
-        <li>✅ Top Tutors</li>
-        <li>✅ STEM.org Certificate</li>
-        <li>✅ Competitions & Events</li>
-        <li>✅ Project-Based Learning</li>
-        <li>✅ Lifetime Platform Access</li>
+    <div style="background:#f9fafc;padding:16px;border-radius:10px;">
+      <h3>Includes:</h3>
+      <ul style="line-height:1.8;">
+        <li>Delivery Cost</li>
+        <li>Kit Cost</li>
+        <li>Student Dashboard</li>
+        <li>Certificate</li>
+        <li>1:1 Live Classes</li>
+        <li>Free Courses</li>
+        <li>Flexible Scheduling</li>
+      </ul>
+      <hr style="margin:16px 0;">
+      <h3>After the payment!</h3>
+      <ul style="line-height:1.8;">
+        <li>Complete address</li>
+        <li>No. of classes/week (1 or 2)</li>
+        <li>Preferred class timings (with time zone)</li>
       </ul>
     </div>
+
+  </div>
+
+    <p class="note">👉 Enter only the number of classes. All values are calculated automatically.</p>
   </div>
 
   <script>
-    const originalPrice = 7200;
-    const discountedPrice = 2439;
-    const couponCode = "ARUN50";
+    function calculate() {
+      const classes = Number(document.getElementById('classes').value);
+      const basePrice = 25;
+      const employeeDiscount = 0.25;
 
-    let countdowns = {};
+      let websiteDiscount = 0;
+      let kitCost = 80;
 
-    function applyCoupon(course) {
-      const inputId = course === 'coding' ? 'couponCoding' : 'couponRobotics';
-      const priceId = course === 'coding' ? 'priceCoding' : 'priceRobotics';
-      const errorId = course === 'coding' ? 'errorCoding' : 'errorRobotics';
-      const timerId = course === 'coding' ? 'timerCoding' : 'timerRobotics';
-
-      const input = document.getElementById(inputId).value.trim().toUpperCase();
-      const priceBox = document.getElementById(priceId);
-      const errorBox = document.getElementById(errorId);
-      const timerBox = document.getElementById(timerId);
-
-      clearInterval(countdowns[course]); // Clear any existing timer
-
-      priceBox.innerHTML = '';
-      errorBox.innerHTML = '';
-      timerBox.innerHTML = '';
-
-      if (input === couponCode) {
-        priceBox.innerHTML = `🎉 <strong>Discounted Price:</strong> <span class="discounted">$${discountedPrice.toFixed(2)}</span>`;
-
-        // Set countdown for 1 hour (3600 seconds)
-        let timeLeft = 3600;
-        updateTimerDisplay(timeLeft, timerBox);
-
-        countdowns[course] = setInterval(() => {
-          timeLeft--;
-          if (timeLeft <= 0) {
-            clearInterval(countdowns[course]);
-            timerBox.innerHTML = '⏳ Coupon expired.';
-          } else {
-            updateTimerDisplay(timeLeft, timerBox);
-          }
-        }, 1000);
-      } else {
-        errorBox.innerText = "❌ Invalid coupon code.";
+      if (classes >= 150) {
+        websiteDiscount = 0.25;
+        kitCost = 504;
+      } else if (classes >= 90) {
+        websiteDiscount = 0.10;
+        kitCost = 160;
       }
+
+      const totalDiscount = websiteDiscount + employeeDiscount;
+      const webRPC = basePrice * (1 - websiteDiscount);
+      const smRPC = basePrice * (1 - totalDiscount);
+      const packagePrice = smRPC * classes;
+      const totalPrice = packagePrice + kitCost;
+      const originalPrice = (basePrice * classes) + kitCost;
+
+      document.getElementById('webDiscount').innerText = (websiteDiscount * 100) + '%';
+      document.getElementById('webRPC').innerText = webRPC.toFixed(2);
+      document.getElementById('totalDiscount').innerText = (totalDiscount * 100) + '%';
+      document.getElementById('smRPC').innerText = smRPC.toFixed(2);
+      document.getElementById('packagePrice').innerText = packagePrice.toFixed(2);
+      document.getElementById('scholarshipPrice').innerText = totalPrice.toFixed(2);
+      document.getElementById('originalPrice').innerText = originalPrice.toFixed(2);
+      document.getElementById('finalPayable').innerText = totalPrice.toFixed(2);.innerText = totalPrice.toFixed(2);
+      document.getElementById('kitCost').innerText = kitCost;
     }
 
-    function updateTimerDisplay(seconds, element) {
-      const h = String(Math.floor(seconds / 3600)).padStart(2, '0');
-      const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
-      const s = String(seconds % 60).padStart(2, '0');
-      element.innerHTML = `⏳ Coupon applied! Expires in ${h}:${m}:${s}`;
-    }
+    calculate();
   </script>
 </body>
 </html>
