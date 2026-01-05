@@ -3,13 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ON Call Prices</title>
+  <title>OTO Pricing - Robotics</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       background: #f5f7fb;
-      padding: 30px;
+      padding: 20px;
+      margin: 0;
+      animation: fadeIn 0.5s ease-in;
     }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     .container {
       max-width: 900px;
       margin: auto;
@@ -21,11 +24,46 @@
     h1 {
       text-align: center;
       margin-bottom: 20px;
+      color: #333;
+    }
+    .btns {
+      margin-bottom: 12px;
+      text-align: center;
+    }
+    .btns button {
+      padding: 10px 16px;
+      margin: 0 4px;
+      border: none;
+      border-radius: 6px;
+      background: #0b5ed7;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btns button:hover { background: #0a4db8; }
+    select, input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
+      margin-bottom: 15px;
+    }
+    @media (max-width: 768px) {
+      .grid { grid-template-columns: 1fr; }
+      body { padding: 10px; }
     }
     table {
       width: 100%;
       border-collapse: collapse;
+      animation: slideIn 0.3s ease-out;
     }
+    @keyframes slideIn { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     th, td {
       padding: 12px;
       border-bottom: 1px solid #ddd;
@@ -33,138 +71,173 @@
     }
     th {
       background: #f0f2f8;
-    }
-    input {
-      width: 100%;
-      padding: 8px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
+      font-weight: bold;
     }
     .highlight {
       font-weight: bold;
       color: #0b5ed7;
     }
+    .breakdown {
+      background: #f9fafc;
+      padding: 12px;
+      border-radius: 6px;
+      margin-top: 10px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .breakdown:hover { background: #e9ecef; }
+    .breakdown-details {
+      display: none;
+      margin-top: 8px;
+      padding-left: 10px;
+      border-left: 2px solid #0b5ed7;
+    }
+    .breakdown-details.show { display: block; }
+    .includes {
+      background: #f9fafc;
+      padding: 16px;
+      border-radius: 10px;
+    }
+    .includes h3 { margin-top: 0; color: #333; }
+    .includes ul { line-height: 1.8; margin: 0; padding-left: 20px; }
+    hr { border: none; border-top: 1px solid #ddd; margin: 15px 0; }
+    .cta {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .cta button {
+      padding: 12px 24px;
+      background: #28a745;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .cta button:hover { background: #218838; }
+    .error { color: #dc3545; font-size: 14px; margin-top: 5px; display: none; }
     .note {
       margin-top: 15px;
       font-size: 14px;
       color: #555;
+      text-align: center;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>ON Call Prices</h1>
-
-    <div style="display:grid;grid-template-columns:2fr 1fr;gap:20px;">
-
-    <table>
-      <tr>
-        <th>OTO</th>
-        <td>Robotics</td>
-      </tr>
-      <tr>
-        <th>Class Bundle (Enter Here)</th>
-        <td><input type="number" id="classes" value="45" oninput="calculate()"></td>
-      </tr>
-      <tr>
-        <th>Rate Per Class (USD)</th>
-        <td>$<span id="basePrice">25</span></td>
-      </tr>
-      <tr>
-        <th>Website Discount</th>
-        <td><span id="webDiscount">0%</span></td>
-      </tr>
-      <tr>
-        <th>Website Discounted RPC</th>
-        <td>$<span id="webRPC">25.00</span></td>
-      </tr>
-      <tr>
-        <th>Employee Discount (SM)</th>
-        <td>25%</td>
-      </tr>
-      <tr>
-        <th>Total Discount</th>
-        <td><span id="totalDiscount">25%</span></td>
-      </tr>
-      <tr>
-        <th>SM Discounted RPC</th>
-        <td class="highlight">$<span id="smRPC">18.75</span></td>
-      </tr>
-      <tr>
-        <th>Scholarship Price (Including Kit)</th>
-        <td class="highlight">$<span id="scholarshipPrice">923.75</span></td>
-      </tr>
-      <tr>
-        <th>Original Price</th>
-        <td style="color:#888;"><del>$<span id="originalPrice">1205.00</span></del></td>
-      </tr>
-      <tr>
-        <th><strong>TOTAL PRICE – PAYABLE TODAY</strong></th>
-        <td class="highlight">$<span id="finalPayable">923.75</span></td>
-      </tr>
-    </table>
-
-    <div style="background:#f9fafc;padding:16px;border-radius:10px;">
-      <h3>Includes:</h3>
-      <ul style="line-height:1.8;">
-        <li>Delivery Cost</li>
-        <li>Kit Cost</li>
-        <li>Student Dashboard</li>
-        <li>Certificate</li>
-        <li>1:1 Live Classes</li>
-        <li>Free Courses</li>
-        <li>Flexible Scheduling</li>
-      </ul>
-      <hr style="margin:16px 0;">
-      <h3>After the payment!</h3>
-      <ul style="line-height:1.8;">
-        <li>Complete address</li>
-        <li>No. of classes/week (1 or 2)</li>
-        <li>Preferred class timings (with time zone)</li>
-      </ul>
+    <h1>OTO Pricing - Robotics</h1>
+    <div class="btns">
+      <button onclick="setClasses(45)" aria-label="Select 45 Classes Bundle">45 Classes</button>
+      <button onclick="setClasses(90)" aria-label="Select 90 Classes Bundle">90 Classes</button>
+      <button onclick="setClasses(150)" aria-label="Select 150 Classes Bundle">150 Classes</button>
+      <button onclick="calculate()" aria-label="Recalculate Pricing">Calculate</button>
     </div>
-
+    <div class="grid">
+      <table role="table" aria-label="Pricing Breakdown">
+        <tr><th>OTO</th><td>Robotics</td></tr>
+        <tr>
+          <th>Number of Classes</th>
+          <td>
+            <select id="classes" onchange="calculate()" aria-label="Select Number of Classes">
+              <option value="45">45</option>
+              <option value="90">90</option>
+              <option value="150">150</option>
+            </select>
+            <div class="error" id="errorMsg">Please select a bundle size (45, 90, or 150 classes).</div>
+          </td>
+        </tr>
+        <tr><th>Rate per Class</th><td>$25</td></tr>
+        <tr><th>Kit Cost</th><td>$<span id="kitCost">80</span></td></tr>
+        <tr><th>Website Price (Full)</th><td>$<span id="websitePrice">1125</span></td></tr>
+        <tr><th><strong>Scholarship / Final Payable Price</strong></th>
+          <td class="highlight">$<span id="finalPrice">924</span></td>
+        </tr>
+      </table>
+      <div class="includes">
+        <h3>Includes:</h3>
+        <ul>
+          <li>Delivery Cost</li>
+          <li>Kit Cost</li>
+          <li>Student Dashboard</li>
+          <li>Certificate</li>
+          <li>1:1 Live Classes</li>
+          <li>Free Courses</li>
+          <li>Flexible Scheduling</li>
+        </ul>
+        <hr>
+        <h3>After Payment:</h3>
+        <ul>
+          <li>Complete address</li>
+          <li>No. of classes/week (1 or 2)</li>
+          <li>Preferred class timings (with time zone)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="breakdown" onclick="toggleBreakdown()" aria-expanded="false" aria-label="Toggle Discount Breakdown">
+      👁️ View Discount Details
+      <div class="breakdown-details" id="breakdownDetails">
+        <strong>Website Discount:</strong> <span id="websiteDisc">0%</span><br>
+        <strong>Employee Discount:</strong> 25%<br>
+        <strong>Total Discount:</strong> <span id="totalDisc">25%</span><br>
+        <strong>SM Rate per Class:</strong> $<span id="smRate">18.75</span>
+      </div>
+    </div>
+    <div class="cta">
+      <button onclick="alert('Redirecting to payment... (placeholder)')" aria-label="Enroll Now">Enroll Now</button>
+    </div>
   </div>
-
-    <p class="note">👉 Enter only the number of classes. All values are calculated automatically.</p>
-  </div>
+  <p class="note">👉 Select a bundle for auto-pricing. Custom values? Contact us for a quote.</p>
 
   <script>
+    function setClasses(val) {
+      document.getElementById('classes').value = val;
+      calculate();
+    }
+    function toggleBreakdown() {
+      const details = document.getElementById('breakdownDetails');
+      details.classList.toggle('show');
+      const breakdown = event.target.closest('.breakdown');
+      breakdown.setAttribute('aria-expanded', details.classList.contains('show'));
+    }
     function calculate() {
-      const classes = Number(document.getElementById('classes').value);
-      const basePrice = 25;
-      const employeeDiscount = 0.25;
+      const classes = Number(document.getElementById('classes').value) || 0;
+      const errorMsg = document.getElementById('errorMsg');
+      if (![45, 90, 150].includes(classes)) {
+        errorMsg.style.display = 'block';
+        return; // Don't calculate invalid
+      }
+      errorMsg.style.display = 'none';
 
-      let websiteDiscount = 0;
+      const rate = 25;
+      let websiteDisc = 0;
       let kitCost = 80;
-
       if (classes >= 150) {
-        websiteDiscount = 0.25;
+        websiteDisc = 0.25;
         kitCost = 504;
       } else if (classes >= 90) {
-        websiteDiscount = 0.10;
+        websiteDisc = 0.10;
         kitCost = 160;
       }
+      const employeeDisc = 0.25;
+      const totalDisc = websiteDisc + employeeDisc;
+      const smPerClass = rate * (1 - totalDisc);
+      const websiteFull = rate * classes;
+      const packagePrice = Math.round(smPerClass * classes);
+      const finalPrice = packagePrice + kitCost;
 
-      const totalDiscount = websiteDiscount + employeeDiscount;
-      const webRPC = basePrice * (1 - websiteDiscount);
-      const smRPC = basePrice * (1 - totalDiscount);
-      const packagePrice = smRPC * classes;
-      const totalPrice = packagePrice + kitCost;
-      const originalPrice = (basePrice * classes) + kitCost;
-
-      document.getElementById('webDiscount').innerText = (websiteDiscount * 100) + '%';
-      document.getElementById('webRPC').innerText = webRPC.toFixed(2);
-      document.getElementById('totalDiscount').innerText = (totalDiscount * 100) + '%';
-      document.getElementById('smRPC').innerText = smRPC.toFixed(2);
-      document.getElementById('packagePrice').innerText = packagePrice.toFixed(2);
-      document.getElementById('scholarshipPrice').innerText = totalPrice.toFixed(2);
-      document.getElementById('originalPrice').innerText = originalPrice.toFixed(2);
-      document.getElementById('finalPayable').innerText = totalPrice.toFixed(2);.innerText = totalPrice.toFixed(2);
       document.getElementById('kitCost').innerText = kitCost;
-    }
+      document.getElementById('websitePrice').innerText = Math.round(websiteFull);
+      document.getElementById('finalPrice').innerText = finalPrice;
 
-    calculate();
+      // Update breakdown
+      document.getElementById('websiteDisc').innerText = (websiteDisc * 100) + '%';
+      document.getElementById('totalDisc').innerText = (totalDisc * 100) + '%';
+      document.getElementById('smRate').innerText = smPerClass.toFixed(2);
+    }
+    calculate(); // Initial load
   </script>
 </body>
 </html>
