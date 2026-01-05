@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ON Call Prices</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fb;
+      padding: 30px;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: #ffffff;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background: #f0f2f8;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    .highlight {
+      font-weight: bold;
+      color: #0b5ed7;
+    }
+    .note {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>ON Call Prices</h1>
+
+    <div style="display:grid;grid-template-columns:2fr 1fr;gap:20px;">
+
+    <table>
+      <tr>
+        <th>OTO</th>
+        <td>Robotics</td>
+      </tr>
+      <tr>
+        <th>Class Bundle (Enter Here)</th>
+        <td><input type="number" id="classes" value="45" oninput="calculate()"></td>
+      </tr>
+      <tr>
+        <th>Rate Per Class (USD)</th>
+        <td>$<span id="basePrice">25</span></td>
+      </tr>
+      <tr>
+        <th>Website Discount</th>
+        <td><span id="webDiscount">0%</span></td>
+      </tr>
+      <tr>
+        <th>Website Discounted RPC</th>
+        <td>$<span id="webRPC">25.00</span></td>
+      </tr>
+      <tr>
+        <th>Employee Discount (SM)</th>
+        <td>25%</td>
+      </tr>
+      <tr>
+        <th>Total Discount</th>
+        <td><span id="totalDiscount">25%</span></td>
+      </tr>
+      <tr>
+        <th>SM Discounted RPC</th>
+        <td class="highlight">$<span id="smRPC">18.75</span></td>
+      </tr>
+      <tr>
+        <th>Scholarship Price (Including Kit)</th>
+        <td class="highlight">$<span id="scholarshipPrice">923.75</span></td>
+      </tr>
+      <tr>
+        <th>Original Price</th>
+        <td style="color:#888;"><del>$<span id="originalPrice">1205.00</span></del></td>
+      </tr>
+      <tr>
+        <th><strong>TOTAL PRICE – PAYABLE TODAY</strong></th>
+        <td class="highlight">$<span id="finalPayable">923.75</span></td>
+      </tr>
+    </table>
+
+    <div style="background:#f9fafc;padding:16px;border-radius:10px;">
+      <h3>Includes:</h3>
+      <ul style="line-height:1.8;">
+        <li>Delivery Cost</li>
+        <li>Kit Cost</li>
+        <li>Student Dashboard</li>
+        <li>Certificate</li>
+        <li>1:1 Live Classes</li>
+        <li>Free Courses</li>
+        <li>Flexible Scheduling</li>
+      </ul>
+      <hr style="margin:16px 0;">
+      <h3>After the payment!</h3>
+      <ul style="line-height:1.8;">
+        <li>Complete address</li>
+        <li>No. of classes/week (1 or 2)</li>
+        <li>Preferred class timings (with time zone)</li>
+      </ul>
+    </div>
+
+  </div>
+
+    <p class="note">👉 Enter only the number of classes. All values are calculated automatically.</p>
+  </div>
+
+  <script>
+    function calculate() {
+      const classes = Number(document.getElementById('classes').value);
+      const basePrice = 25;
+      const employeeDiscount = 0.25;
+
+      let websiteDiscount = 0;
+      let kitCost = 80;
+
+      if (classes >= 150) {
+        websiteDiscount = 0.25;
+        kitCost = 504;
+      } else if (classes >= 90) {
+        websiteDiscount = 0.10;
+        kitCost = 160;
+      }
+
+      const totalDiscount = websiteDiscount + employeeDiscount;
+      const webRPC = basePrice * (1 - websiteDiscount);
+      const smRPC = basePrice * (1 - totalDiscount);
+      const packagePrice = smRPC * classes;
+      const totalPrice = packagePrice + kitCost;
+      const originalPrice = (basePrice * classes) + kitCost;
+
+      document.getElementById('webDiscount').innerText = (websiteDiscount * 100) + '%';
+      document.getElementById('webRPC').innerText = webRPC.toFixed(2);
+      document.getElementById('totalDiscount').innerText = (totalDiscount * 100) + '%';
+      document.getElementById('smRPC').innerText = smRPC.toFixed(2);
+      document.getElementById('packagePrice').innerText = packagePrice.toFixed(2);
+      document.getElementById('scholarshipPrice').innerText = totalPrice.toFixed(2);
+      document.getElementById('originalPrice').innerText = originalPrice.toFixed(2);
+      document.getElementById('finalPayable').innerText = totalPrice.toFixed(2);.innerText = totalPrice.toFixed(2);
+      document.getElementById('kitCost').innerText = kitCost;
+    }
+
+    calculate();
+  </script>
+</body>
+</html>
